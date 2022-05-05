@@ -176,11 +176,24 @@ for i in range(n_models):
     
     ###cosmology
     
-    z_s = random.uniform(z_source_min, z_source_max)
-    M_lens = constants.M_sun*(10**random.uniform(M_min, M_max))
-    v_disp = np.random.normal(v_disp_mean,v_disp_sigma)
+    z_too_small = True
+    
+    while z_too_small:
+        
+        u = random.uniform(0, 1)
+        
+        comoving_s = (u**(1/3))*cosmo.comoving_distance(z_source_max)
+        
+        z_s = z_at_value(cosmo.comoving_distance, comoving_s)
+        
+        if z_s > z_source_min:
+            z_too_small = False
     
     z_source = z_s
+            
+    M_lens = constants.M_sun*(10**random.uniform(M_min, M_max))
+    v_disp = np.random.normal(v_disp_mean,v_disp_sigma)
+
     
     bad_values = True
     
@@ -493,6 +506,7 @@ for i in range(n_models):
       "x_image": x_image,
       "y_image": y_image,
       "kwargs_ps": kwargs_ps,
+      "snr": snr,
       "image_sim_E": image_sim_E,
       "image_sim_Q": image_sim_Q,
       "image_sim_EQ": image_sim_EQ,
