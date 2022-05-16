@@ -49,6 +49,7 @@ kwargs_numerics = info["kwargs_numerics"]
 source_model_list = info["source_model_list"]
 point_source_list = info["point_source_list"]
 n_models_use = info["n_models_use"]
+source_amp = info["source_amp"]
 
 ########################### Things which stay the same #################################
 
@@ -113,7 +114,6 @@ for i in range(n_models_use):
     e_sersic = obj["e_sersic"]
     ra_source = obj["ra_source"]
     dec_source = obj["dec_source"]
-    source_amp = obj["source_amp"]
     R_sersic = obj["R_sersic"]
     n_sersic = obj["n_sersic"]
     ddt = obj["ddt"]

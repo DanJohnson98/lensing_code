@@ -102,9 +102,9 @@ z_lens_frac_max = 0.99
 
 ##data
 
-snr_min = 5      #the lowest acceptable value of the snr
-snr_max = 10**3   #the highest acceptable value of the snr
-snr_scale = 5    #this is the centre of the Gaussian distribution from which the snr is selected at max d_L
+snr_min = 100      #the lowest acceptable value of the snr
+snr_max = 10**4   #the highest acceptable value of the snr
+snr_scale = 300    #this is the centre of the Gaussian distribution from which the snr is selected at max d_L
 snr_sigma_frac = 0.5 #the standard distribution of the Gaussian, as a fraction of the mean
 
 tE_fac = 5  #width of aperture is this number x Einstein radius in pixels
@@ -222,15 +222,13 @@ for i in range(n_models):
      
     ##data
     
-    d_L_max = LensCosmo(z_lens=z_lens, z_source=z_source_max, cosmo=cosmo).ds*(1+z_source_max)**2
-    
-    snr_mu = snr_scale*(d_L_max**2)*(lensCosmo.ds*(1+z_s)**2)**(-2)
+    snr_mu = snr_scale*((1+z_source_max)**4)*(1+z_s)**(-4)
     
     snr_sigma = snr_mu*snr_sigma_frac
     
     snr = Gauss_bounded(snr_mu, snr_sigma, snr_min, snr_max)
     
-    background_rms = 1/snr
+    background_rms = (1/snr)*source_amp
 
     ##lens model
     
