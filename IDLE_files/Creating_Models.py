@@ -102,12 +102,12 @@ z_lens_frac_max = 0.99
 
 ##data
 
-snr_min = 100      #the lowest acceptable value of the snr
+snr_min = 50      #the lowest acceptable value of the snr
 snr_max = 10**4   #the highest acceptable value of the snr
-snr_scale = 300    #this is the centre of the Gaussian distribution from which the snr is selected at max d_L
+snr_scale = 200    #this is the centre of the Gaussian distribution from which the snr is selected at max d_L
 snr_sigma_frac = 0.5 #the standard distribution of the Gaussian, as a fraction of the mean
 
-tE_fac = 5  #width of aperture is this number x Einstein radius in pixels
+tE_fac = 6  #width of aperture is this number x Einstein radius in pixels
 
 ##lens model
 
@@ -124,9 +124,11 @@ M_max = 12
 #velocity dispersion (in m/s)
 v_disp_mean = 210*(10**3)
 v_disp_sigma = 54*(10**3)
+v_disp_min = 100*(10**3)
+v_disp_max = 400*(10**3)
 
 #smaller values are reasonable, but these become increasingly poorly resolved
-theta_E_min = 0.4
+theta_E_min = 0.2
 
 #e.g. lensing and dynamics in two simple steps (Agnello 2013)
 gamma_min = 1.5
@@ -192,8 +194,7 @@ for i in range(n_models):
     z_source = z_s
             
     M_lens = constants.M_sun*(10**random.uniform(M_min, M_max))
-    v_disp = np.random.normal(v_disp_mean,v_disp_sigma)
-
+    v_disp = Gauss_bounded(v_disp_mean,v_disp_sigma,v_disp_min,v_disp_max)
     
     bad_values = True
     
@@ -210,9 +211,9 @@ for i in range(n_models):
         d_l = lensCosmo.dd*constants.Mpc
         d_s = lensCosmo.ds*constants.Mpc
         
-        theta_E = (1/constants.arcsec)*np.sqrt(4*constants.G*M_lens*d_ls/(d_l*d_s*constants.c**2))
+        #theta_E = (1/constants.arcsec)*np.sqrt(4*constants.G*M_lens*d_ls/(d_l*d_s*constants.c**2))
         
-        #theta_E = (1/constants.arcsec)*4*np.pi*(v_disp**2/constants.c**2)*(d_ls/d_s)
+        theta_E = (1/constants.arcsec)*4*np.pi*(v_disp**2/constants.c**2)*(d_ls/d_s)
 
         if theta_E > theta_E_min:
             print("Found theta_E")

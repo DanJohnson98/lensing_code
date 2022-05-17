@@ -79,7 +79,7 @@ kwargs_likelihood_TD = {'check_bounds': True,
 
 walker_ratio = 10
 fitting_kwargs_list = [['MCMC',
-                        {'n_burn': 1000, 'n_run': 1000,
+                        {'n_burn': 100, 'n_run': 100,
                          'walkerRatio': walker_ratio, 'sigma_scale': 1., 'threadCount': 1}]]
 
 
